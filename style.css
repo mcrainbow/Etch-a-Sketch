@@ -1,0 +1,178 @@
+@import url("./normalize.css");
+
+:root {
+  --primary-text: rgb(46, 46, 46);
+  --primary-bg: rgb(211 211 211);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
+  line-height: 1.6;
+  font-family: "Lato", sans-serif;
+
+  display: flex;
+  flex-direction: column;
+}
+.container {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.active {
+  background-color: var(--primary-bg) !important;
+  color: rgb(94, 94, 94) !important;
+  border: 1px solid rgb(94, 94, 94) !important;
+}
+
+.noBorder {
+  border: "none" !important;
+}
+
+/* ! Header */
+.header {
+  margin: 30px;
+  height: 100px;
+  text-align: center;
+}
+.header__title {
+  font-family: "Handjet", cursive;
+
+  font-size: 70px;
+  font-weight: 700;
+}
+
+/* ! Main */
+
+.main {
+  flex: 1 0 auto;
+}
+
+/* ! Main Menu */
+.container__wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.main__menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 30px;
+
+  background-color: rgb(94, 94, 94);
+  border-radius: 4px;
+}
+.main__menu-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+}
+.main__menu-card:nth-last-of-type(2) {
+  margin-bottom: 20px;
+}
+.main__menu-box {
+}
+.main__menu-choice {
+  display: block;
+  width: 100px;
+  height: 50px;
+
+  cursor: pointer;
+}
+.main__menu-text {
+  color: white;
+  font-size: 15px;
+  font-weight: 400;
+}
+.btn {
+  width: 100%;
+  height: 30px;
+  margin-bottom: 10px;
+  outline: none;
+  cursor: pointer;
+
+  overflow: hidden;
+  text-align: center;
+
+  line-height: 40px;
+
+  border: 1px solid white;
+  border-radius: 4px;
+
+  color: white;
+  line-height: 30px;
+}
+.boxes-amount {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%;
+}
+.boxes-amount span {
+  color: white;
+  display: block;
+  width: 100%;
+}
+.boxes-amount input {
+  width: 100%;
+  height: 2px;
+  background-color: #fff;
+  appearance: none;
+  outline: none;
+  border-radius: 2px;
+
+  cursor: pointer;
+}
+
+/* ! Main Game */
+
+.grid__field-wrapper {
+  width: 660px;
+  height: 660px;
+  background-color: rgb(94, 94, 94);
+  border-radius: 7px;
+  padding: 10px;
+}
+.grid__field {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  background-color: var(--primary-bg);
+  color: rgb(94, 94, 94);
+}
+.grid__field-block {
+  border-top: 1px solid rgb(94, 94, 94);
+  border-left: 1px solid rgb(94, 94, 94);
+}
+
+/* ! Footer */
+
+.footer {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  font-size: 20px;
+}
+
+.fa-github {
+  color: var(--primary-dark);
+  font-size: 24px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.fa-github:hover {
+  transform: rotate(360deg) scale(1.2);
+}
