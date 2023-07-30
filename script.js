@@ -17,6 +17,7 @@ const toggleGridBtn = document.querySelector(".toggle-grid");
 
 const modeButtons = document.querySelectorAll(".mode-btn");
 const colorModeBtn = document.querySelector(".color-mode");
+const rainbowModeBtn = document.querySelector(".rainbow-mode");
 
 const bgPlate = document.querySelector(".bg-color");
 const penPlate = document.querySelector(".pen-color");
@@ -100,47 +101,50 @@ const setGridTemplate = (gridContainer, value = DEFAULT_SIZE) => {
 const drawingMode = (mode) => {
   gridBlocks.forEach((block) => {
     block.addEventListener("click", () => {
-      console.log(currentDrawingMode);
       if (mode === "Color Mode" && colorModeBtn.classList.contains("active")) {
         colorMode(block);
-      } else if (mode === "Rainbow Mode") {
+      } else if (
+        mode === "Rainbow Mode" &&
+        rainbowModeBtn.classList.contains("active")
+      ) {
         rainbowMode(block);
       }
     });
   });
 };
 
-function rgbToHex(r, g, b) {
-  return "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
-}
-const formatingRGB = (elem) => {
-  let rgbColor = elem.style.background;
-  let grbArr = rgbColor
-    .slice(4, rgbColor.length - 1)
+// ! Grabber Color Funcs
+const rgbToHex = (r, g, b) =>
+  "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
+
+const formatingRGB = (color) => {
+  let grbArr = color
+    .slice(4, color.length - 1)
     .replaceAll(", ", " ")
     .split(" ")
     .map((num) => parseInt(num));
-  console.log("grbArr " + grbArr);
-  console.log("rgbToHex(...grbArr) " + rgbToHex(...grbArr));
+
   return rgbToHex(...grbArr);
 };
-const pickingColor = (grid) => {
-  let color = "";
-  grid.forEach((elem) => {
-    elem.addEventListener("click", () => {
-      color = formatingRGB(elem);
-      penPlate.value = color;
-    });
-  });
+const pickingColor = (color) => {
+  color = formatingRGB(color);
+
+  return color;
 };
 
+// ! Disabling BTNSD
 const disablingModeBtns = (btns) => {
   btns.forEach((btn) => {
     btn.classList.remove("active");
     currentDrawingMode = "";
-    console.log(currentDrawingMode);
   });
 };
+const disablingSingleBtn = (btn) => {
+  btn.classList.remove("active");
+  currentDrawingMode = "";
+};
+
+const shutdownGrabBtn = () => {};
 
 window.onload = setGridTemplate(gridField); // * Drawing blocks on load site
 
@@ -176,23 +180,46 @@ toggleGridBtn.addEventListener("click", (e) => {
 // * Mode Buttons
 modeButtons.forEach((btn) => {
   btn.addEventListener("click", (e) => {
-    addingActiveClass(e.target);
-    gettingCurrentMode();
-    console.log(currentDrawingMode);
-    drawingMode(currentDrawingMode);
+    if (e.target.classList.contains("active")) {
+      disablingSingleBtn(e.target);
+    } else {
+      addingActiveClass(e.target);
+      gettingCurrentMode();
+      drawingMode(currentDrawingMode);
+      console.log("BTNS: currentDrawingMode " + currentDrawingMode);
+    }
   });
 });
+let grabber = false;
+
 // * Grabber Color Btn
 grabberColor.addEventListener("click", (e) => {
-  if (e.target.value === "OFF") {
-    e.target.value = "ON";
-    e.target.classList.add("active");
-    pickingColor(gridBlocks);
-    disablingModeBtns(modeButtons);
-  } else {
-    addGridLines(gridBlocks);
+  if (
+    e.target.value === "ON" &&
+    e.target.classList.contains("active") &&
+    grabber === true
+  ) {
+    grabber = false;
     e.target.value = "OFF";
     e.target.classList.remove("active");
+  } else if (
+    e.target.value === "OFF" &&
+    !e.target.classList.contains("active")
+  ) {
+    e.target.value = "ON";
+    e.target.classList.add("active");
+    grabber = true;
+    disablingModeBtns(modeButtons);
+    if (grabber === true) {
+      gridBlocks.forEach((block) => {
+        block.addEventListener("click", () => {
+          penPlate.value = pickingColor(block.style.background);
+          e.target.value = "OFF";
+          e.target.classList.remove("active");
+          grabber = false;
+        });
+      });
+    }
   }
 });
 
